@@ -40,5 +40,4 @@ server.use((error, req, res, next) => {
     res.status(error.status || 400).send({ error: { message: error.message } })
 })
 
-server
-    .listen(port, () => console.log(`listening on ${port}`))
+server.listen(port, () => console.log(`listening on ${port}`))
