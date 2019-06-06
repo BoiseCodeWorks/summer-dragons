@@ -24,9 +24,9 @@ function _diceRoller(str) {
 
 
 export default class GameService {
-    async attack(game, request) {
+    async attack(game, attack) {
         try {
-            let attackDie = game.champion.attacks.find(a => a.name == request.attack)
+            let attackDie = game.champion.attacks.find(a => a.name == attack)
             if (attackDie) {
                 //Calculate Damage
                 let playerDamage = _diceRoller(attackDie.damage)
@@ -35,7 +35,7 @@ export default class GameService {
                 game.dragonHp -= playerDamage
                 game.championHp -= dragonDamage
                 //Update Game Status
-                game.history.push(`${game.champion.name} used ${request.attack} doing ${playerDamage} damage. The ${game.dragon.name} did ${dragonDamage} in response`)
+                game.history.push(`${game.champion.name} used ${attack} doing ${playerDamage} damage. The ${game.dragon.name} did ${dragonDamage} in response`)
                 if (game.dragonHp <= 0 || game.championHp <= 0) {
                     game.gameOver = true
                 }

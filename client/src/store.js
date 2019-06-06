@@ -16,7 +16,6 @@ export default new Vuex.Store({
     champion: '',
     dragon: '',
     game: {}
-
   },
   mutations: {
     setChampions(state, data) {
@@ -54,6 +53,10 @@ export default new Vuex.Store({
         console.error(e)
       }
     },
+    async getGameById({ commit, dispatch }, id) {
+      let res = await _api.get('games/' + id)
+      commit('setGame', res.data)
+    },
     setChampion({ commit, dispatch }, id) {
       commit("setChampion", id)
     },
@@ -67,7 +70,16 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
+    },
+    async attack({ commit, dispatch }, payload) {
+      try {
+        let res = await _api.put("games/" + payload.id, payload)
+        commit('setGame', res.data)
+      } catch (error) {
+        console.error(error)
+      }
     }
+
 
   }
 })

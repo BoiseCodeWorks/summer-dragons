@@ -32,7 +32,9 @@ export default class GameController {
 
     async GetById(req, res, next) {
         try {
-            let data = await _gameRepo.findById(req.params.id).populate('dragon').populate('champion')
+            let data = await _gameRepo.findById(req.params.id)
+                .populate('dragon')
+                .populate('champion')
             res.send(data)
         } catch (err) { next(err) }
     }
@@ -51,9 +53,10 @@ export default class GameController {
     }
     async edit(req, res, next) {
         try {
-            let game = await _gameRepo.findById(req.params.id).populate('dragon').populate('champion')
+            let game = await _gameRepo.findById(req.params.id)
+                .populate('champion')
             if (game.gameOver === false) {
-                let result = await _service.attack(game, req.body)
+                let result = await _service.attack(game, req.body.attack)
                 return res.send(result)
             }
             throw new Error("invalid id or Game Over")
