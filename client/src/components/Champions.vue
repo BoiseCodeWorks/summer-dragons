@@ -1,10 +1,19 @@
 <template>
   <div class="col-6">
-    <div class="card">
-      <img src="//placehold.it/200x200" class="card-img-top" alt="...">
-      <div class="card-body">
-        <h5 class="card-title">NAME: CLASS</h5>
-        <h5>HP:?</h5>
+    <h3>Choose Your Champion!</h3>
+    <div class="row">
+      <div
+        class="card col-6"
+        v-for="champion in champions"
+        :key="champion._id"
+        @click="selectChampion(champion._id)"
+        :class="{selected: champion._id == selectedChamp}"
+      >
+        <img :src="champion.imgUrl" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{champion.name}}: {{champion.class}}</h5>
+          <h5>HP: {{champion.hp}}</h5>
+        </div>
       </div>
     </div>
   </div>
@@ -12,12 +21,23 @@
 
 <script>
 export default {
-  name: "",
+  name: "Champions",
   data() {
     return {};
   },
-  computed: {},
-  methods: {}
+  computed: {
+    champions() {
+      return this.$store.state.champions;
+    },
+    selectedChamp() {
+      return this.$store.state.champion;
+    }
+  },
+  methods: {
+    selectChampion(id) {
+      this.$store.dispatch("setChampion", id);
+    }
+  }
 };
 </script>
 

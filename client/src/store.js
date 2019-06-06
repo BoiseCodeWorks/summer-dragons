@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from './router.js'
 
 const _api = axios.create({
   baseURL: '//localhost:3000/api'   //   https://dragon-duel.herokuapp.com/api/
@@ -11,16 +12,34 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     champions: [],
-    dragons: []
+    dragons: [],
+    champion: '',
+    dragon: '',
+    game: {}
+
   },
   mutations: {
-
+    setChampions(state, data) {
+      state.champions = data
+    },
+    setDragons(state, data) {
+      state.dragons = data
+    },
+    setDragon(state, id) {
+      state.dragon = id
+    },
+    setChampion(state, id) {
+      state.champion = id
+    },
+    setGame(state, data) {
+      state.game = data
+    }
   },
   actions: {
     async getChampions({ commit, dispatch }) {
       try {
         let res = await _api.get('champions')
-        console.log(res.data)
+        commit('setChampions', res.data)
       }
       catch (e) {
         console.error(e)
@@ -29,11 +48,26 @@ export default new Vuex.Store({
     async getDragons({ commit, dispatch }) {
       try {
         let res = await _api.get('dragons')
-        console.log(res.data)
+        commit('setDragons', res.data)
       }
       catch (e) {
         console.error(e)
       }
+    },
+    setChampion({ commit, dispatch }, id) {
+      commit("setChampion", id)
+    },
+    setDragon({ commit, dispatch }, id) {
+      commit("setDragon", id)
+    },
+    async createGame({ commit, dispatch }, payload) {
+      try {
+        let res = await _api.post('games', payload)
+        router.push({ name: 'game', params: { id: res.data._id } })
+      } catch (error) {
+        console.error(error)
+      }
     }
+
   }
 })
