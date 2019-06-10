@@ -1,4 +1,4 @@
 module.exports = {
-  publicPath: '\'/dragon/\'',
+  publicPath: '\'/summer-dragons/\'',
   outputDir: 'docs'
 }
